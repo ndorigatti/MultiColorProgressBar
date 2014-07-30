@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <declare-styleable name="MulticolorProgressBar" tools:ignore="ResourceName">
+
+        <!-- Drawable used for the progress mode. -->
+        <attr name="mcp_straightProgressDrawable" format="reference" />
+        <attr name="mcp_reversedProgressDrawable" format="reference"/>
+        <attr name="mcp_minWidth" format="dimension" />
+        <attr name="mcp_maxWidth" format="dimension" />
+        <attr name="mcp_minHeight" format="dimension" />
+        <attr name="mcp_maxHeight" format="dimension"/>
+        <!-- Defines the maximum value the progress can take. -->
+        <attr name="mcp_max" format="integer" />
+        <!-- Defines the default progress value, between 0 and max. -->
+        <attr name="mcp_progress" format="integer" />
+        <!-- Defines the default progress color -->
+        <attr name="mcp_progressColor" format="color"/>
+        <!-- Defines the secondary progress value, between 0 and max. This progress is drawn between
+             the primary progress and the background.  It can be ideal for media scenarios such as
+             showing the buffering progress while the default progress shows the play progress. -->
+        <attr name="mcp_secondaryProgress" format="integer" />
+        <!-- Defines the default progress color -->
+        <attr name="mcp_secondaryProgressColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="MulticolorProgressBarTheme" tools:ignore="ResourceName">
+        <!-- Default ProgressBar style. This is straight progress bar. -->
+        <attr name="multicolorProgressBarStyle" format="reference" />
+    </declare-styleable>
+
+</resources>
