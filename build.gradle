@@ -9,8 +9,23 @@ buildscript {
     }
 }
 
+ext {
+    compileSdkVersion = 19
+    buildToolsVersion = "20.0.0"
+}
+
+def isReleaseBuild() {
+    return version.contains("SNAPSHOT") == false
+}
+
 allprojects {
+
+    version = VERSION_NAME
+    group = GROUP
+
     repositories {
         jcenter()
     }
 }
+
+apply plugin: 'android-reporting'
