@@ -1,4 +1,4 @@
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -9,9 +9,7 @@ android {
         versionName project.VERSION_NAME
         versionCode Integer.parseInt(project.VERSION_CODE)
     }
-    android {
-        resourcePrefix 'mcp_'
-    }
+    resourcePrefix 'mcp_'
 }
 
 dependencies {

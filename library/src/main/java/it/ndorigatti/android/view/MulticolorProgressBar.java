@@ -33,120 +33,51 @@ import java.util.ArrayList;
 
 /**
  * <p>
- * Visual indicator of progress in some operation.  Displays a bar to the user
+ * Visual indicator of double progress in some operation.  Displays a bar to the user
  * representing how far the operation has progressed; the application can
  * change the amount of progress (modifying the length of the bar) as it moves
  * forward.  There is also a secondary progress displayable on a progress bar
- * which is useful for displaying intermediate progress, such as the buffer
- * level during a streaming playback progress bar.
+ * which is useful for displaying alternative progress, such as download/upload in P2P applications.
+ * The secondary progress is drawn on top of the primary whenever it is less than the primary progress.
+ * If they are the same value, primary progress takes the precedence.
  * </p>
+ * <p/> *
  * <p/>
- * <p>
- * A progress bar can also be made indeterminate. In indeterminate mode, the
- * progress bar shows a cyclic animation without an indication of progress. This mode is used by
- * applications when the length of the task is unknown. The indeterminate progress bar can be either
- * a spinning wheel or a horizontal bar.
- * </p>
- * <p/>
- * <p>The following code example shows how a progress bar can be used from
- * a worker thread to update the user interface to notify the user of progress:
- * </p>
- * <p/>
- * <pre>
- * public class MyActivity extends Activity {
- *     private static final int PROGRESS = 0x1;
- *
- *     private ProgressBar mProgress;
- *     private int mProgressStatus = 0;
- *
- *     private Handler mHandler = new Handler();
- *
- *     protected void onCreate(Bundle icicle) {
- *         super.onCreate(icicle);
- *
- *         setContentView(R.layout.progressbar_activity);
- *
- *         mProgress = (ProgressBar) findViewById(R.id.progress_bar);
- *
- *         // Start lengthy operation in a background thread
- *         new Thread(new Runnable() {
- *             public void run() {
- *                 while (mProgressStatus &lt; 100) {
- *                     mProgressStatus = doWork();
- *
- *                     // Update the progress bar
- *                     mHandler.post(new Runnable() {
- *                         public void run() {
- *                             mProgress.setProgress(mProgressStatus);
- *                         }
- *                     });
- *                 }
- *             }
- *         }).start();
- *     }
- * }</pre>
- *
- * <p>To add a progress bar to a layout file, you can use the {@code &lt;ProgressBar&gt;} element.
- * By default, the progress bar is a spinning wheel (an indeterminate indicator). To change to a
- * horizontal progress bar, apply the {@link android.R.style#Widget_ProgressBar_Horizontal
- * Widget.ProgressBar.Horizontal} style, like so:</p>
+ *  *
+ * <p>To add a progress bar to a layout file, you can use the {@code &lt;MultiColorProgressBar&gt;} element.
+ * By default, the progress bar is coloured of blue/green colors. To change progress colors,
+ * call the {@link #setProgressColor(int)} and {@link #setSecondaryProgressColor(int)}, like so:</p>
  *
  * <pre>
- * &lt;ProgressBar
- *     style="@android:style/Widget.ProgressBar.Horizontal"
- *     ... /&gt;</pre>
+ * MulticolorProgressBar mcpb = ...
+ *     mcpb.setProgressColor(Color.RED);
+ *     mcpb.setSecondaryProgressColor(getResources().getColor(android.R.color.holo_blue_dark));
+ *     ... </pre>
  *
- * <p>If you will use the progress bar to show real progress, you must use the horizontal bar. You
- * can then increment the  progress with {@link #incrementProgressBy incrementProgressBy()} or
- * {@link #setProgress setProgress()}. By default, the progress bar is full when it reaches 100. If
+ * <p>You can then increment the  progress with {@link #incrementProgressBy(int)} or
+ * {@link #setProgress(int)}. By default, the progress bar is full when it reaches 100. If
  * necessary, you can adjust the maximum value (the value for a full bar) using the {@link
- * R.styleable#BaseProgressBar_max android:max} attribute. Other attributes available are listed
+ * R.styleable#MulticolorProgressBar_mcp_max mcpb:max} attribute. Other attributes available are listed
  * below.</p>
  *
- * <p>Another common style to apply to the progress bar is {@link
- * android.R.style#Widget_ProgressBar_Small Widget.ProgressBar.Small}, which shows a smaller
- * version of the spinning wheel&mdash;useful when waiting for content to load.
- * For example, you can insert this kind of progress bar into your default layout for
- * a view that will be populated by some content fetched from the Internet&mdash;the spinning wheel
- * appears immediately and when your application receives the content, it replaces the progress bar
- * with the loaded content. For example:</p>
- *
- * <pre>
- * &lt;LinearLayout
- *     android:orientation="horizontal"
- *     ... &gt;
- *     &lt;ProgressBar
- *         android:layout_width="wrap_content"
- *         android:layout_height="wrap_content"
- *         style="@android:style/Widget.ProgressBar.Small"
- *         android:layout_marginRight="5dp" /&gt;
- *     &lt;TextView
- *         android:layout_width="wrap_content"
- *         android:layout_height="wrap_content"
- *         android:text="@string/loading" /&gt;
- * &lt;/LinearLayout&gt;</pre>
- *
- * <p>Other progress bar styles provided by the system include:</p>
- * <ul>
- * <li>{@link android.R.style#Widget_ProgressBar_Horizontal Widget.ProgressBar.Horizontal}</li>
- * </ul>
- * <p>The "inverse" styles provide an inverse color scheme for the spinner, which may be necessary
- * if your application uses a light colored theme (a white background).</p>
  *
  * <p><strong>XML attributes</b></strong>
  * <p>
- * See {@link R.styleable#BaseProgressBar BaseProgressBar Attributes},
+ * See {@link R.styleable#MulticolorProgressBar MulticolorProgressBar Attributes},
  * {@link View View Attributes}
  * </p>
  *
- * @attr ref R.styleable#BaseProgressBar_max
- * @attr ref R.styleable#BaseProgressBar_maxHeight
- * @attr ref R.styleable#BaseProgressBar_maxWidth
- * @attr ref R.styleable#BaseProgressBar_minHeight
- * @attr ref R.styleable#BaseProgressBar_minWidth
- * @attr ref R.styleable#BaseProgressBar_progress
- * @attr ref R.styleable#BaseProgressBar_progressDrawable
- * @attr ref R.styleable#BaseProgressBar_secondaryProgress
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_max
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_maxHeight
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_maxWidth
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_minHeight
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_minWidth
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_progress
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_progressColor
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_straightProgressDrawable
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_secondaryProgress
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_secondaryProgressColor
+ * @attr ref R.styleable#MulticolorProgressBar_mcp_reversedProgressDrawable
  */
 public class MulticolorProgressBar extends View {
     private static final int MAX_LEVEL = 10000;
@@ -185,7 +116,7 @@ public class MulticolorProgressBar extends View {
     }
 
     public MulticolorProgressBar(Context context, AttributeSet attrs, int defStyle) {
-        this(context, attrs, defStyle, 0);
+        this(context, attrs, defStyle, R.style.MulticolorProgressBarStyle);
     }
 
     /**
@@ -232,6 +163,7 @@ public class MulticolorProgressBar extends View {
     }
 
     /**
+     * Set color for the two drawables
      * @param firstColor
      * @param secondColor
      */
@@ -241,6 +173,7 @@ public class MulticolorProgressBar extends View {
     }
 
     /**
+     * Update the progress colors
      * @param id
      * @param color
      */
@@ -689,6 +622,8 @@ public class MulticolorProgressBar extends View {
 
         setProgress(ss.progress);
         setSecondaryProgress(ss.secondaryProgress);
+        setProgressColor(ss.progressColor);
+        setSecondaryProgressColor(ss.secondaryProgressColor);
     }
 
     @Override

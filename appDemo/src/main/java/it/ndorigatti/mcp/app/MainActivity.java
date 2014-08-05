@@ -36,23 +36,9 @@ import it.gmariotti.android.example.colorpicker.dashclockpicker.ColorPickerDialo
 import it.ndorigatti.android.view.MulticolorProgressBar;
 
 public class MainActivity extends Activity {
-    MulticolorProgressBar multicolorProgressBar;
+    private MulticolorProgressBar multicolorProgressBar;
     private ImageButton primaryColorPreview, secondaryColorPreview;
     private int primColor, secondColor;
-
-    public int[] colorChoice(Context context) {
-
-        int[] mColorChoices = null;
-        String[] color_array = context.getResources().getStringArray(R.array.default_color_choice_values);
-
-        if (color_array != null && color_array.length > 0) {
-            mColorChoices = new int[color_array.length];
-            for (int i = 0; i < color_array.length; i++) {
-                mColorChoices[i] = Color.parseColor(color_array[i]);
-            }
-        }
-        return mColorChoices;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +47,17 @@ public class MainActivity extends Activity {
         multicolorProgressBar = (MulticolorProgressBar) findViewById(R.id.bicolorProgressBar);
         primColor = getResources().getColor(R.color.initial_progress_color);
         secondColor = getResources().getColor(R.color.initial_secondaryprogress_color);
+
+        if (null != savedInstanceState) {
+            primColor = savedInstanceState.getInt("mcpb_primary_color", primColor);
+            secondColor = savedInstanceState.getInt("mcpb_secondary_color", secondColor);
+        }
+
         primaryColorPreview = (ImageButton) findViewById(R.id.primaryProgressColorPreview);
         secondaryColorPreview = (ImageButton) findViewById(R.id.secondaryProgressColorPreview);
+        primaryColorPreview.setImageDrawable(new ColorDrawable(primColor));
+        secondaryColorPreview.setImageDrawable(new ColorDrawable(secondColor));
+
         SeekBar seekBarPrimary = (SeekBar) findViewById(R.id.seekBarPrimary);
         SeekBar seekBarSecondary = (SeekBar) findViewById(R.id.seekBarSecondary);
         final int[] mColor = colorChoice(this);
@@ -213,5 +208,26 @@ public class MainActivity extends Activity {
                 .build();
         scv.setShouldCentreText(true);
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("mcpb_primary_color", primColor);
+        outState.putInt("mcpb_secondary_color", secondColor);
+    }
+
+    public int[] colorChoice(Context context) {
+
+        int[] mColorChoices = null;
+        String[] color_array = context.getResources().getStringArray(R.array.default_color_choice_values);
+
+        if (color_array != null && color_array.length > 0) {
+            mColorChoices = new int[color_array.length];
+            for (int i = 0; i < color_array.length; i++) {
+                mColorChoices[i] = Color.parseColor(color_array[i]);
+            }
+        }
+        return mColorChoices;
     }
 }

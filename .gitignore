@@ -28,6 +28,7 @@ local.properties
 demo/apk/
 
 #Personal Files
+snapshotTester/
 signing.properties
 lic.properties
 
