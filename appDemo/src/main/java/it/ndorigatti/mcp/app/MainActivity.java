@@ -22,13 +22,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 
-import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.google.samples.apps.iosched.ui.widget.BezelImageView;
 
 import java.util.Random;
 
@@ -37,7 +33,7 @@ import it.ndorigatti.android.view.MulticolorProgressBar;
 
 public class MainActivity extends Activity {
     private MulticolorProgressBar multicolorProgressBar;
-    private ImageButton primaryColorPreview, secondaryColorPreview;
+    private BezelImageView primaryColorPreview,secondaryColorPreview;
     private int primColor, secondColor;
 
     @Override
@@ -53,8 +49,8 @@ public class MainActivity extends Activity {
             secondColor = savedInstanceState.getInt("mcpb_secondary_color", secondColor);
         }
 
-        primaryColorPreview = (ImageButton) findViewById(R.id.primaryProgressColorPreview);
-        secondaryColorPreview = (ImageButton) findViewById(R.id.secondaryProgressColorPreview);
+        primaryColorPreview = (BezelImageView) findViewById(R.id.primaryProgressColorPreview);
+        secondaryColorPreview = (BezelImageView) findViewById(R.id.secondaryProgressColorPreview);
         primaryColorPreview.setImageDrawable(new ColorDrawable(primColor));
         secondaryColorPreview.setImageDrawable(new ColorDrawable(secondColor));
 
@@ -160,53 +156,6 @@ public class MainActivity extends Activity {
         });
 
 
-        //ShowcaseView scv =
-        ShowcaseView scv = new ShowcaseView.Builder(this)
-                .setTarget(new ViewTarget(secondaryColorPreview))
-                .setContentTitle("Change Colors")
-                .setContentText("Click on coloured tiles to change the progressbar colors")
-                .hideOnTouchOutside().setStyle(R.style.ShowcaseView_MCP).setShowcaseEventListener(new OnShowcaseEventListener() {
-                    @Override
-                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-
-                        new ShowcaseView.Builder(MainActivity.this).setTarget(new ViewTarget(randomColors))
-                                .setContentTitle("Random Colors").setContentText("Click to generate Random Progress Bar Colors")
-                                .setStyle(R.style.ShowcaseView_MCP).hideOnTouchOutside().setShowcaseEventListener(new OnShowcaseEventListener() {
-                            @Override
-                            public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                                new ShowcaseView.Builder(MainActivity.this)
-                                        .setTarget(new ActionViewTarget(MainActivity.this, ActionViewTarget.Type.HOME))
-                                        .setContentTitle("And a big THANK YOU to Taylor Ling for the app icon!")
-                                        .hideOnTouchOutside().setStyle(R.style.ShowcaseView_MCP)
-                                        .build();
-                                //.setShouldCentreText(true);
-                            }
-
-                            @Override
-                            public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                            }
-
-                            @Override
-                            public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                            }
-                        }).build().setShouldCentreText(true);
-                    }
-
-                    @Override
-                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                    }
-                })
-                .singleShot(140586L)
-                .build();
-        scv.setShouldCentreText(true);
 
     }
 
