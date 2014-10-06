@@ -43,11 +43,11 @@ import java.util.ArrayList;
  * </p>
  * <p/> *
  * <p/>
- *  *
+ * *
  * <p>To add a progress bar to a layout file, you can use the {@code &lt;MultiColorProgressBar&gt;} element.
  * By default, the progress bar is coloured of blue/green colors. To change progress colors,
  * call the {@link #setProgressColor(int)} and {@link #setSecondaryProgressColor(int)}, like so:</p>
- *
+ * <p/>
  * <pre>
  * MulticolorProgressBar mcpb = ...
  *     mcpb.setProgressColor(Color.RED);
@@ -164,6 +164,7 @@ public class MulticolorProgressBar extends View {
 
     /**
      * Set color for the two drawables
+     *
      * @param firstColor
      * @param secondColor
      */
@@ -174,6 +175,7 @@ public class MulticolorProgressBar extends View {
 
     /**
      * Update the progress colors
+     *
      * @param id
      * @param color
      */
@@ -565,7 +567,6 @@ public class MulticolorProgressBar extends View {
             // rotates properly in its animation
             canvas.save();
             canvas.translate(getPaddingLeft(), getPaddingTop());
-            long time = getDrawingTime();
             d.draw(canvas);
             canvas.restore();
         }
@@ -681,7 +682,7 @@ public class MulticolorProgressBar extends View {
      * It looks up at stored parameter, does not recalculate anything.
      */
     private boolean isNormalColorOrder() {
-        return (compareNewProgress(mProgress, mSecondaryProgress) <= 0) ? true : false;
+        return (compareNewProgress(mProgress, mSecondaryProgress) <= 0);
     }
 
     //Colored
@@ -695,7 +696,7 @@ public class MulticolorProgressBar extends View {
      * @return
      */
     private boolean checkIsNormalColorOrder(int progress, int secondaryProgress) {
-        return (compareNewProgress(progress, secondaryProgress) <= 0) ? true : false;
+        return (compareNewProgress(progress, secondaryProgress) <= 0);
     }
 
     private static class RefreshData {
