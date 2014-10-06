@@ -16,13 +16,29 @@
 
 package it.ndorigatti.mcp.app;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.google.samples.apps.iosched.ui.widget.BezelImageView;
 
@@ -33,7 +49,7 @@ import it.ndorigatti.android.view.MulticolorProgressBar;
 
 public class MainActivity extends Activity {
     private MulticolorProgressBar multicolorProgressBar;
-    private BezelImageView primaryColorPreview,secondaryColorPreview;
+    private BezelImageView primaryColorPreview, secondaryColorPreview;
     private int primColor, secondColor;
 
     @Override
@@ -154,9 +170,6 @@ public class MainActivity extends Activity {
                 secondaryColorPreview.setImageDrawable(new ColorDrawable(secondColor));
             }
         });
-
-
-
     }
 
     @Override
@@ -164,6 +177,32 @@ public class MainActivity extends Activity {
         super.onSaveInstanceState(outState);
         outState.putInt("mcpb_primary_color", primColor);
         outState.putInt("mcpb_secondary_color", secondColor);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_about) {
+            //Open about dialog
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            Fragment prev = fm.findFragmentByTag("about_dialog");
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+
+            new AboutDialog().show(ft, "about_dialog");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public int[] colorChoice(Context context) {
@@ -178,5 +217,51 @@ public class MainActivity extends Activity {
             }
         }
         return mColorChoices;
+    }
+
+    /**
+     * About Dialog
+     */
+    public static class AboutDialog extends DialogFragment {
+
+        public AboutDialog() {
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Get app version
+            PackageManager pm = getActivity().getPackageManager();
+            String packageName = getActivity().getPackageName();
+            String versionName;
+            try {
+                PackageInfo info = pm.getPackageInfo(packageName, 0);
+                versionName = info.versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                versionName = "-";
+            }
+
+            LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+            View rootView = layoutInflater.inflate(R.layout.dialog_about_layout, null);
+            TextView nameAndVersionView = (TextView) rootView.findViewById(
+                    R.id.app_info);
+            nameAndVersionView.setText(Html.fromHtml(
+                    getString(R.string.title_about, versionName)));
+
+            TextView aboutBodyView = (TextView) rootView.findViewById(R.id.about_body);
+            aboutBodyView.setText(Html.fromHtml(getString(R.string.about_body)));
+            aboutBodyView.setMovementMethod(new LinkMovementMethod());
+
+            return new AlertDialog.Builder(getActivity())
+                    //.setTitle(R.string.title_about)
+                    .setView(rootView)
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.dismiss();
+                                }
+                            }
+                    )
+                    .create();
+        }
     }
 }
