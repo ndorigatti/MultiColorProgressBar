@@ -15,7 +15,7 @@
  ******************************************************************************/
 
 package it.ndorigatti.mcp.app;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -29,6 +29,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -47,7 +49,7 @@ import java.util.Random;
 import it.gmariotti.android.example.colorpicker.dashclockpicker.ColorPickerDialogDash;
 import it.ndorigatti.android.view.MulticolorProgressBar;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
     private MulticolorProgressBar multicolorProgressBar;
     private BezelImageView primaryColorPreview, secondaryColorPreview;
     private int primColor, secondColor;
@@ -56,6 +58,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setCollapsible(true);
         multicolorProgressBar = (MulticolorProgressBar) findViewById(R.id.bicolorProgressBar);
         primColor = getResources().getColor(R.color.initial_progress_color);
         secondColor = getResources().getColor(R.color.initial_secondaryprogress_color);
@@ -69,6 +74,7 @@ public class MainActivity extends Activity {
         secondaryColorPreview = (BezelImageView) findViewById(R.id.secondaryProgressColorPreview);
         primaryColorPreview.setImageDrawable(new ColorDrawable(primColor));
         secondaryColorPreview.setImageDrawable(new ColorDrawable(secondColor));
+        primaryColorPreview.setCropToPadding(false);
 
         SeekBar seekBarPrimary = (SeekBar) findViewById(R.id.seekBarPrimary);
         SeekBar seekBarSecondary = (SeekBar) findViewById(R.id.seekBarSecondary);

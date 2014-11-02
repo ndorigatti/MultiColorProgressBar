@@ -2,4 +2,8 @@
 <resources>
     <color name="initial_progress_color">#99cc00</color>
     <color name="initial_secondaryprogress_color">#33b5e5</color>
+
+    <color name="color_primary">#ff2467e5</color>
+    <color name="color_primaryDark">#ff000fe5</color>
+    <color name="color_accent">#ff009610</color>
 </resources>

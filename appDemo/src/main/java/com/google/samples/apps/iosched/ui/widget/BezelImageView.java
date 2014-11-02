@@ -40,7 +40,7 @@ import it.ndorigatti.mcp.app.R;
  * flexible enough for use with other desired aesthetics.
  */
 public class BezelImageView extends ImageView {
-    private Paint mBlackPaint;
+    private Paint mBlackPaint,mWhitePaint;
     private Paint mMaskedPaint;
 
     private Rect mBounds;
@@ -90,6 +90,12 @@ public class BezelImageView extends ImageView {
         // Other initialization
         mBlackPaint = new Paint();
         mBlackPaint.setColor(0xff000000);
+
+        mWhitePaint = new Paint();
+        mWhitePaint.setStyle(Paint.Style.STROKE);
+        mWhitePaint.setColor(0xff333333);
+        mWhitePaint.setStrokeWidth(2);//TODO
+        mWhitePaint.setAntiAlias(true);
 
         mMaskedPaint = new Paint();
         mMaskedPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
@@ -210,11 +216,7 @@ public class BezelImageView extends ImageView {
         // Draw from cache
         canvas.drawBitmap(mCacheBitmap, mBounds.left, mBounds.top, null);
         //Draw a circle outside
-        Paint whitePaint = new Paint();
-        whitePaint.setStyle(Paint.Style.STROKE);
-        whitePaint.setColor(0xff333333);
-        whitePaint.setStrokeWidth(1);
-        whitePaint.setAntiAlias(true);
-        canvas.drawCircle((width) / 2, (height) / 2, (width) / 2 - 1, whitePaint);
+
+        canvas.drawCircle((width) / 2, (height) / 2, (width) / 2 - 1, mWhitePaint);
     }
 }
